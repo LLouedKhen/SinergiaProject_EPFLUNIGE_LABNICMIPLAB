@@ -1,0 +1,215 @@
+clear; clc
+%Start onset, var dur, no pmod 
+
+mainPath = '/media/miplab-nas2/Data2/Movies_Emo/Leyla/Preprocessed_data/';
+imgBetaPath = '/media/miplab-nas2/Data2/Movies_Emo/Leyla/ImagingData/';
+delete matlabbatch.mat
+bPath =  '/media/miplab-nas2/Data2/Movies_Emo/Leyla/';
+cd (mainPath)
+subjFolders = dir('sub-*');
+for i = 1:length(subjFolders)
+    sub = subjFolders(i).name(1:7);
+    folderN = fullfile(mainPath, subjFolders(i).name);
+    cd(folderN)
+    sessF = dir('ses*');
+    mRegFile = {};
+    movPath = {};
+    for s = 1:length(sessF)
+        sessFolder = fullfile(folderN, sessF(s).name);
+        cd(sessFolder)
+        mF = dir('pp_*');
+        for m = 1:length(mF)
+            if ~contains(mF(m).name,'Rest')
+                movF = fullfile(sessFolder, mF(m).name);
+                cd(movF)
+
+                mReg = dir('Regressors.txt');
+
+                mRegFile = fullfile(movF, mReg.name);
+                movPath= fullfile(movF);
+
+                movNamesRegs = {};
+                sessStr =['ses-' num2str(s)];
+
+                if contains(mRegFile, sessStr)
+                    movName1 = extractBetween(mRegFile, 'ses-', '.feat');
+                    movName2 = extractAfter(movName1, sub);
+                    movName = extractAfter(movName2, [sessStr,'_']);
+                    movNamesRegs = [movNamesRegs, movName];
+                end
+
+                %                 movNamesRegs = movNamesRegs';
+
+                bf = fullfile(bPath, sub);
+                cd(bf)
+                regsS = dir('Regressors_EM*');
+                scanTimes = dir('PrefilmScanTime_*.mat');
+                for triT = 1:length(scanTimes)
+                    tTimes{triT} = scanTimes(triT).name;
+                end
+
+                scIdx = find(contains(tTimes, movName));
+                if isempty(scIdx)
+                    continue
+                else
+                load(scanTimes(scIdx).name)
+
+
+
+                theseRegFile = {};
+                emReg = [];
+                for mN = 1:length(regsS)
+
+                    regFile = regsS(mN).name;
+                    if contains(regFile,sessStr) && contains(regFile, movName)
+                        thisFile = regsS(mN).name;
+                        theseRegFile(mN) = cellstr(regsS(mN).name);
+
+                        emReg(mN)= str2num(thisFile(14:15))+1;
+                        %                         if contains(tTimes, movName)
+                        %                         keep = 1;
+                        %                         scIdx = find(contains(tTimes, movName));
+                        %                         load(scanTimes(scIdx).name)
+                        %                         end
+                    end
+                end
+                theseRegFile = theseRegFile(~cellfun('isempty',theseRegFile));
+                emReg =nonzeros(emReg);
+
+
+
+                emNum = unique(emReg);
+                for ems = 1:length(emNum)
+                    if emNum(ems) == 01
+                        thisEm = 'Anger';
+                    elseif emNum(ems) == 02
+                        thisEm = 'Anxiety';
+                    elseif emNum(ems) == 03
+                        thisEm = 'Contempt';
+                    elseif emNum(ems) == 04
+                        thisEm = 'Disgust';
+                    elseif emNum(ems) == 05
+                        thisEm = 'Fear';
+                    elseif emNum(ems) == 06
+                        thisEm = 'Guilty';
+                    elseif emNum(ems) == 07
+                        thisEm = 'Happiness';
+                    elseif emNum(ems) == 08
+                        thisEm = 'Love';
+                    elseif emNum(ems) == 09
+                        thisEm = 'Sad';
+                    elseif emNum(ems) == 10
+                        thisEm = 'Satisfaction';
+                    elseif emNum(ems) == 11
+                        thisEm = 'Shame';
+                    elseif emNum(ems) == 12
+                        thisEm = 'Surprise';
+                    elseif emNum(ems) == 13
+                        thisEm = 'Warm-heartedness';
+                    end
+
+                    sprintf("Subject %s rated %d emotions", sub, length(emNum));
+
+                    thisRegFile = theseRegFile(ems);
+                    thisRegFFile = fullfile(bf, thisRegFile);
+
+                    cd(imgBetaPath)
+                    if ~exist(sub, 'dir')
+                        mkdir(sub)
+                    end
+                    cd(sub)
+
+                    csName = [thisEm,'_', sessStr, '_',char(movName),'_NoPmod'];
+
+                    if ~exist(csName, 'dir')
+                        mkdir(csName)
+                    end
+                    cd(csName)
+
+                    thisD = fullfile(imgBetaPath, sub, csName);
+                    cd(thisD)
+                                                    if exist('SPM.mat')
+                                                        continue
+                                                    else
+
+                    if  ~isempty(scIdx)
+                        spm('Defaults','fMRI');
+                        spm_jobman('initcfg');
+
+
+                        data = readtable(thisRegFFile{1});
+                        mov = data.Movie;
+                        cName = thisEm;
+                        onsets = data.Start + toAdd;
+                        dur = data.Dur;
+                        pmodN = data.EN{1};
+                        pmodVal = data.ES;
+                        if all(pmodVal ==0)
+                            continue
+                        else
+                            cd(imgBetaPath)
+                            sprintf("Processing Subject %s on %s, Movie number %d", sub, cName, m);
+
+
+
+
+                            matlabbatch{1}.spm.stats.fmri_spec.dir = {thisD};
+                            matlabbatch{1}.spm.stats.fmri_spec.timing.units = 'secs';
+                            matlabbatch{1}.spm.stats.fmri_spec.timing.RT = 1.3;
+                            matlabbatch{1}.spm.stats.fmri_spec.timing.fmri_t = 16;
+                            matlabbatch{1}.spm.stats.fmri_spec.timing.fmri_t0 = 8;
+
+                            matlabbatch{1}.spm.stats.fmri_spec.sess.scans = cellstr(spm_select('FPList', movPath, '^filtered_func_data_res_MNI_.*.nii$'));
+                            matlabbatch{1}.spm.stats.fmri_spec.sess.cond.name = pmodN;
+                            matlabbatch{1}.spm.stats.fmri_spec.sess.cond.onset = onsets;
+                            matlabbatch{1}.spm.stats.fmri_spec.sess.cond.duration = dur;
+                            matlabbatch{1}.spm.stats.fmri_spec.sess.cond.tmod = 0;
+                            matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod = struct('name', {}, 'param', {},'poly', {});
+%                             matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod.param = pmodVal;
+%                             matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod.poly = 1;
+                            matlabbatch{1}.spm.stats.fmri_spec.sess.cond.orth = 1;
+
+                            matlabbatch{1}.spm.stats.fmri_spec.sess.multi =  {''};
+                            matlabbatch{1}.spm.stats.fmri_spec.sess.regress =  struct('name', {}, 'val', {});
+                            matlabbatch{1}.spm.stats.fmri_spec.sess.multi_reg =  cellstr(mRegFile);
+                            matlabbatch{1}.spm.stats.fmri_spec.sess.hpf =  128;
+                            matlabbatch{1}.spm.stats.fmri_spec.fact = struct('name', {}, 'levels', {});
+                            matlabbatch{1}.spm.stats.fmri_spec.bases.hrf.derivs = [0 0];
+                            matlabbatch{1}.spm.stats.fmri_spec.volt = 1;
+                            matlabbatch{1}.spm.stats.fmri_spec.global = 'None';
+                            matlabbatch{1}.spm.stats.fmri_spec.mthresh = -Inf;
+                            matlabbatch{1}.spm.stats.fmri_spec.mask = {''};
+                            matlabbatch{1}.spm.stats.fmri_spec.cvi = 'AR(1)';
+
+                            matlabbatch{2}.spm.stats.fmri_est.spmmat = cfg_dep('fMRI model specification: SPM.mat File', substruct('.', 'val', '{}', {1}, '.', 'val', '{}', {1},'.', 'val', '{}', {1}), substruct('.', 'spmmat'));
+                            matlabbatch{2}.spm.stats.fmri_est.write_residuals = 0;
+                            matlabbatch{2}.spm.stats.fmri_est.method.Classical = 1;
+
+                            matlabbatch{3}.spm.stats.con.spmmat = {fullfile(thisD, 'SPM.mat')};
+                            matlabbatch{3}.spm.stats.con.consess{1}.tcon.name = pmodN;
+                            matlabbatch{3}.spm.stats.con.consess{1}.tcon.weights = [1];
+                            matlabbatch{3}.spm.stats.con.consess{1}.tcon.sessrep = 'none';
+                            matlabbatch{3}.spm.stats.con.delete = 0;
+
+                            save('matlabbatch');
+                            spm_jobman('run', matlabbatch)
+                            cd(mainPath)
+                        end
+                        
+                                                    end
+                        end
+          
+                    end
+
+                end
+            end
+        end
+    end
+end
+
+
+
+
+
+
+
