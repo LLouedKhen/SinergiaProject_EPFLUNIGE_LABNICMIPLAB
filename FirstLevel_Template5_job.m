@@ -1,3 +1,4 @@
+%% 
 clear; clc
 %Use annot, all pmods except guilt and warmheartednes; orth
 
@@ -9,7 +10,10 @@ rPath =  '/media/miplab-nas2/Data2/Movies_Emo/Leyla/';
 
 cd (mainPath)
 subjFolders = dir('sub-*');
-for i = 1:length(subjFolders)
+% for i = 1:length(subjFolders)
+%edit on 19.12.2022, because S32 seems to have been neglected!
+for i =length(subjFolders)
+
     sub = subjFolders(i).name(1:7);
     folderN = fullfile(mainPath, subjFolders(i).name);
     cd(folderN)

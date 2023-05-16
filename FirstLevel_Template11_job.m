@@ -87,7 +87,7 @@ for i = 1:length(subjFolders)
                     end
                     cd(sub)
 
-                    csName = ['FullModel_', '_',char(movName),'_AllPmod_fd_NoOrth'];
+                    csName = ['FullModel_', '_',char(movName),'_AllPmod_Absfd_Orth'];
 
                     if ~exist(csName, 'dir')
                         mkdir(csName)
@@ -129,37 +129,37 @@ for i = 1:length(subjFolders)
                         matlabbatch{1}.spm.stats.fmri_spec.sess.cond.duration = dur;
                         matlabbatch{1}.spm.stats.fmri_spec.sess.cond.tmod = 0;
                         matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(1).name = 'Anger';
-                        matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(1).param = data.Anger_FirstDerivative;
+                        matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(1).param = abs(data.Anger_FirstDerivative);
                         matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(1).poly = 1;
                         matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(2).name = 'Anxiety';
-                        matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(2).param = data.Anxiety_FirstDerivative;
+                        matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(2).param = abs(data.Anxiety_FirstDerivative);
                         matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(2).poly = 1;
                         matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(3).name = 'Contempt';
-                        matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(3).param = data.Contempt_FirstDerivative;
+                        matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(3).param = abs(data.Contempt_FirstDerivative);
                         matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(3).poly = 1;
                         matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(4).name = 'Disgust';
-                        matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(4).param = data.Disgust_FirstDerivative;
+                        matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(4).param = abs(data.Disgust_FirstDerivative);
                         matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(4).poly = 1;
                         matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(5).name = 'Fear';
-                        matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(5).param = data.Fear_FirstDerivative;
+                        matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(5).param = abs(data.Fear_FirstDerivative);
                         matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(5).poly = 1;
                         matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(6).name = 'Happiness';
-                        matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(6).param = data.Happiness_FirstDerivative;
+                        matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(6).param = abs(data.Happiness_FirstDerivative);
                         matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(6).poly = 1;
                         matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(7).name = 'Love';
-                        matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(7).param = data.Love_FirstDerivative;
+                        matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(7).param = abs(data.Love_FirstDerivative);
                         matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(7).poly = 1;
                         matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(8).name = 'Sad';
-                        matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(8).param = data.Sad_FirstDerivative;
+                        matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(8).param = abs(data.Sad_FirstDerivative);
                         matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(8).poly = 1;
                         matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(9).name = 'Satisfaction';
-                        matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(9).param = data.Satisfaction_FirstDerivative;
+                        matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(9).param = abs(data.Satisfaction_FirstDerivative);
                         matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(9).poly = 1;
                         matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(10).name= 'Shame';
-                        matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(10).param = data.Shame_FirstDerivative;
+                        matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(10).param = abs(data.Shame_FirstDerivative);
                         matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(10).poly = 1;
                         matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(11).name= 'Surprise';
-                        matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(11).param= data.Surprise_FirstDerivative;
+                        matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(11).param= abs(data.Surprise_FirstDerivative);
                         matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(11).poly = 1;
                         matlabbatch{1}.spm.stats.fmri_spec.sess.cond.orth = 1;
 

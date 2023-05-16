@@ -1,6 +1,5 @@
 clear; clc
-%Use annot, all pmods except guilt and warmheartednes using fd instead of
-%mu; orth
+%Use annot, all pmods except guilt and warmheartednes using fd instead of mu; no orth
 
 mainPath = '/media/miplab-nas2/Data2/Movies_Emo/Leyla/Preprocessed_data/';
 imgBetaPath = '/media/miplab-nas2/Data2/Movies_Emo/Leyla/ImagingData/';
@@ -10,7 +9,7 @@ rPath =  '/media/miplab-nas2/Data2/Movies_Emo/Leyla/';
 
 cd (mainPath)
 subjFolders = dir('sub-*');
-for i = 1:length(subjFolders)
+for i = 29:length(subjFolders)
     sub = subjFolders(i).name(1:7);
     folderN = fullfile(mainPath, subjFolders(i).name);
     cd(folderN)
@@ -56,7 +55,6 @@ for i = 1:length(subjFolders)
                     continue
                 else
                     load(scanTimes(scIdx).name)
-                    clear tTimes
 
 
                     cd (bPath)
@@ -87,7 +85,7 @@ for i = 1:length(subjFolders)
                     end
                     cd(sub)
 
-                    csName = ['FullModel_', '_',char(movName),'_AllPmod_fd_NoOrth'];
+                    csName = ['FullModel_', '_',char(movName),'_AllPmod_FD_OrthFree'];
 
                     if ~exist(csName, 'dir')
                         mkdir(csName)
@@ -104,7 +102,7 @@ for i = 1:length(subjFolders)
 
 
                         data = readtable(thisFile);
-                        data = data(2:end,:);
+                        data = data(2:end, :);
 
                         onsets = [1:height(data)] + toAdd;
 
@@ -161,7 +159,7 @@ for i = 1:length(subjFolders)
                         matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(11).name= 'Surprise';
                         matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(11).param= data.Surprise_FirstDerivative;
                         matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(11).poly = 1;
-                        matlabbatch{1}.spm.stats.fmri_spec.sess.cond.orth = 1;
+                        matlabbatch{1}.spm.stats.fmri_spec.sess.cond.orth = 0;
 
                         matlabbatch{1}.spm.stats.fmri_spec.sess.multi =  {''};
                         matlabbatch{1}.spm.stats.fmri_spec.sess.regress =  struct('name', {}, 'val', {});
@@ -227,7 +225,7 @@ for i = 1:length(subjFolders)
 
                     end
                 end
-
+                clear scIdx tTimes scanTimes
             end
 
         end

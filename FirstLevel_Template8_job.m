@@ -132,7 +132,7 @@ for i = 1:length(subjFolders)
 
                         matlabbatch{1}.spm.stats.fmri_spec.sess.scans = cellstr(spm_select('FPList', movPath, '^filtered_func_data_res_MNI_.*.nii$'));
                         matlabbatch{1}.spm.stats.fmri_spec.sess.cond.name = 'Onset';
-                        matlabbatch{1}.spm.stats.fmri_spec.sess.cond.onset = onset;
+                        matlabbatch{1}.spm.stats.fmri_spec.sess.cond.onset = onsets;
                         matlabbatch{1}.spm.stats.fmri_spec.sess.cond.duration = dur;
                         matlabbatch{1}.spm.stats.fmri_spec.sess.cond.tmod = 0;
                         matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod.name = pModN;

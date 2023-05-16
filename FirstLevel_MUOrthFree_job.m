@@ -1,6 +1,5 @@
 clear; clc
-%Use annot, all pmods except guilt and warmheartednes using fd instead of
-%mu; orth
+%Use annot, all pmods except guilt and warmheartednes using fd instead of mu; no orth
 
 mainPath = '/media/miplab-nas2/Data2/Movies_Emo/Leyla/Preprocessed_data/';
 imgBetaPath = '/media/miplab-nas2/Data2/Movies_Emo/Leyla/ImagingData/';
@@ -47,6 +46,7 @@ for i = 1:length(subjFolders)
                 cd(bf)
 
                 scanTimes = dir('PrefilmScanTime_*.mat');
+                tTimes = {};
                 for triT = 1:length(scanTimes)
                     tTimes{triT} = scanTimes(triT).name;
                 end
@@ -56,7 +56,6 @@ for i = 1:length(subjFolders)
                     continue
                 else
                     load(scanTimes(scIdx).name)
-                    clear tTimes
 
 
                     cd (bPath)
@@ -87,7 +86,7 @@ for i = 1:length(subjFolders)
                     end
                     cd(sub)
 
-                    csName = ['FullModel_', '_',char(movName),'_AllPmod_fd_NoOrth'];
+                    csName = ['FullModel_', '_',char(movName),'_AllPmod_MU_OrthFree'];
 
                     if ~exist(csName, 'dir')
                         mkdir(csName)
@@ -104,7 +103,6 @@ for i = 1:length(subjFolders)
 
 
                         data = readtable(thisFile);
-                        data = data(2:end,:);
 
                         onsets = [1:height(data)] + toAdd;
 
@@ -129,39 +127,39 @@ for i = 1:length(subjFolders)
                         matlabbatch{1}.spm.stats.fmri_spec.sess.cond.duration = dur;
                         matlabbatch{1}.spm.stats.fmri_spec.sess.cond.tmod = 0;
                         matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(1).name = 'Anger';
-                        matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(1).param = data.Anger_FirstDerivative;
+                        matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(1).param = data.Anger_Mu;
                         matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(1).poly = 1;
                         matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(2).name = 'Anxiety';
-                        matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(2).param = data.Anxiety_FirstDerivative;
+                        matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(2).param = data.Anxiety_Mu;
                         matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(2).poly = 1;
                         matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(3).name = 'Contempt';
-                        matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(3).param = data.Contempt_FirstDerivative;
+                        matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(3).param = data.Contempt_Mu;
                         matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(3).poly = 1;
                         matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(4).name = 'Disgust';
-                        matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(4).param = data.Disgust_FirstDerivative;
+                        matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(4).param = data.Disgust_Mu;
                         matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(4).poly = 1;
                         matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(5).name = 'Fear';
-                        matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(5).param = data.Fear_FirstDerivative;
+                        matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(5).param = data.Fear_Mu;
                         matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(5).poly = 1;
                         matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(6).name = 'Happiness';
-                        matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(6).param = data.Happiness_FirstDerivative;
+                        matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(6).param = data.Happiness_Mu;
                         matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(6).poly = 1;
                         matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(7).name = 'Love';
-                        matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(7).param = data.Love_FirstDerivative;
+                        matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(7).param = data.Love_Mu;
                         matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(7).poly = 1;
                         matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(8).name = 'Sad';
-                        matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(8).param = data.Sad_FirstDerivative;
+                        matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(8).param = data.Sad_Mu;
                         matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(8).poly = 1;
                         matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(9).name = 'Satisfaction';
-                        matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(9).param = data.Satisfaction_FirstDerivative;
+                        matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(9).param = data.Satisfaction_Mu;
                         matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(9).poly = 1;
                         matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(10).name= 'Shame';
-                        matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(10).param = data.Shame_FirstDerivative;
+                        matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(10).param = data.Shame_Mu;
                         matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(10).poly = 1;
                         matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(11).name= 'Surprise';
-                        matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(11).param= data.Surprise_FirstDerivative;
+                        matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(11).param= data.Surprise_Mu;
                         matlabbatch{1}.spm.stats.fmri_spec.sess.cond.pmod(11).poly = 1;
-                        matlabbatch{1}.spm.stats.fmri_spec.sess.cond.orth = 1;
+                        matlabbatch{1}.spm.stats.fmri_spec.sess.cond.orth = 0;
 
                         matlabbatch{1}.spm.stats.fmri_spec.sess.multi =  {''};
                         matlabbatch{1}.spm.stats.fmri_spec.sess.regress =  struct('name', {}, 'val', {});

@@ -1,6 +1,5 @@
 clear; clc
-%Use annot, all pmods except guilt and warmheartednes using fd instead of
-%mu; orth
+%Use annot, all pmods except guilt and warmheartednes using fd instead of mu; no orth
 
 mainPath = '/media/miplab-nas2/Data2/Movies_Emo/Leyla/Preprocessed_data/';
 imgBetaPath = '/media/miplab-nas2/Data2/Movies_Emo/Leyla/ImagingData/';
@@ -47,6 +46,7 @@ for i = 1:length(subjFolders)
                 cd(bf)
 
                 scanTimes = dir('PrefilmScanTime_*.mat');
+                tTimes = {};
                 for triT = 1:length(scanTimes)
                     tTimes{triT} = scanTimes(triT).name;
                 end
@@ -56,7 +56,6 @@ for i = 1:length(subjFolders)
                     continue
                 else
                     load(scanTimes(scIdx).name)
-                    clear tTimes
 
 
                     cd (bPath)
@@ -87,7 +86,7 @@ for i = 1:length(subjFolders)
                     end
                     cd(sub)
 
-                    csName = ['FullModel_', '_',char(movName),'_AllPmod_fd_NoOrth'];
+                    csName = ['FullModel_', '_',char(movName),'_AllPmod_FD_OrthOn'];
 
                     if ~exist(csName, 'dir')
                         mkdir(csName)
@@ -104,7 +103,7 @@ for i = 1:length(subjFolders)
 
 
                         data = readtable(thisFile);
-                        data = data(2:end,:);
+                        data = data(2:end, :);
 
                         onsets = [1:height(data)] + toAdd;
 
