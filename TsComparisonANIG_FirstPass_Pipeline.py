@@ -52,6 +52,8 @@ imRegs = glob.glob('ScaledRegressors*')
 MovieEmotionBestImp = []
 MovieEmotionBestDTW = []
 os.chdir(TsPath)
+allALLGLMs = pd.DataFrame()
+
 for m in Movies:
         thisPath = os.path.join(TsPath,  m)
         os.chdir(m)
@@ -188,6 +190,7 @@ for m in Movies:
             
                 dtwDist.loc[0,:] = np.zeros([len(labels)-1])
                 
+                
                 for i in range(testC.shape[1]):
                     impM = labels[i]
                     test1C = testC.iloc[:,i]
@@ -217,8 +220,11 @@ for m in Movies:
                 allV = allV[allV.p < 0.05]
                 winner = allV.z.idxmax()
                 
+                allALLGLMs  = pd.concat([allALLGLMs, allV], axis = 1)
+                
                 print('The best fit based on GLM for movie ' + m + ' and emotion ' + em + ' is ' + winner )
                 chkMeth.loc[m, em]['GLM'] = winner
+                
                 
                                 
 #                #Now, try with simple ML 

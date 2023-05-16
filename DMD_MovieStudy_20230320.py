@@ -40,8 +40,8 @@ for m in range(len(Movies)):
             sub = int(thisFile[12:14])
             sanityCheck[sub, m] = 1
             data1 = np.array(pd.read_csv(thisFile))
-            data2 = np.transpose(data1)
-            
+            data1a = np.transpose(data1)
+            data2 = data1a[:, 1:-1]
             if len(data3) == 0:
                 data3 = data2
             else:

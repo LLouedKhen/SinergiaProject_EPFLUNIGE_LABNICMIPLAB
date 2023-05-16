@@ -19,7 +19,13 @@ from statsmodels.genmod.bayes_mixed_glm import BinomialBayesMixedGLM
 import matplotlib.pyplot as plt
 import glob
 import shutil
+
 from statsmodels.tsa.seasonal import seasonal_decompose
+from statsmodels.tsa.stattools import adfuller, kpss, acf, pacf, grangercausalitytests
+from statsmodels.nonparametric.smoothers_lowess import lowess
+from statsmodels.graphics.tsaplots import plot_acf, plot_pacf
+from statsmodels.tsa.arima_model import ARIMA
+
 from sklearn.impute import KNNImputer
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.experimental import enable_iterative_imputer
@@ -54,9 +60,7 @@ for file in TSFiles:
     thisMovie = (MovieEmo.split(startM))[0]
     thisEmo = (MovieEmo.split(startM))[1]
     
-    from statsmodels.tsa.arima_model import ARIMA
-    from statsmodels.graphics.tsaplots import plot_acf
-    from statsmodels.tsa.stattools import adfuller
+
     
     plot_acf(thisTs)
     chkTSST = adfuller(thisTs)
