@@ -1,5 +1,5 @@
 clear; clc
-%Use annot, all pmods except guilt and warmheartednes using fd instead of mu; no orth
+%Use annot, all pmods except guilt and warmheartednes
 
 mainPath = '/media/miplab-nas2/Data2/Movies_Emo/Leyla/Preprocessed_data/';
 imgBetaPath = '/media/miplab-nas2/Data2/Movies_Emo/Leyla/ImagingData/';
