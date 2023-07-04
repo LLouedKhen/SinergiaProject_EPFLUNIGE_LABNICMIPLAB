@@ -52,7 +52,7 @@ sFolders = dir('sub-S*');
             for em = 1:length(Emotions)
                 %             clear matlabbatch;
                 cd(opDir) 
-                if isfile(['DoneInMay',Emotions{em},'.txt'])
+                if isfile(['DoneInMayNMPH',Emotions{em},'.txt'])
                     continue
                 else
                     cd (thisModelP)
